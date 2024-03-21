@@ -11,7 +11,7 @@ S2601126 Yuebo Yang
 ## Linear Quadratic Regulator
 ### Exercise 1.1
 
-For Exercise there is a __*.ipynb file__ and a __*.py file__. 
+For Exercise 1.1 there are a __*.ipynb file__ and a __*.py file__. 
 
 #### The Exercise1_1.ipynb file contains:
 
@@ -55,9 +55,8 @@ For Exercise there is a __*.ipynb file__ and a __*.py file__.
         
         - values of value_function `torch.Size([batch_size]) torch.tensor`
         
-        
     - `markov_control`: __a computation of Markov control function__ which requires
-
+    
         __inputs__ (in sequence) of 
         
         - `t_batch`  `torch.Size([batch_size]) torch.tensor` whose entries took value initially from [0,1] but would be scaled by the given T in the further calculation
@@ -69,7 +68,7 @@ For Exercise there is a __*.ipynb file__ and a __*.py file__.
         
         - values of Markov_control_function  `torch.Size([batch_size,n]) torch.tensor`
         
-        
+    
 - __A runnable sample__ including: 
 
     - a whole set of matrices for __initialisation__ and an instance created based on the __initialisation__ from the cunstom class `LQRsolver`
