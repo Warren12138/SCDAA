@@ -89,18 +89,40 @@ t_num = load_interval_setting['t_num']
 x_ends = load_interval_setting['x_ends']
 x_num = load_interval_setting['x_num']
 
+# ____________________________________________________Workload Assignment____________________________________________________
+
+# Zheyan Lu: FSS_VSTN[1e0,1e1,5e1], FTSN_VSS[1e1,5e1,1e2,5e2]
+
+# Yu Wang: FSS_VSTN[1e2,5e2,1e3], FTSN_VSS[1e3,5e3,1e4]
+
+# Yuebo Yang: FSS_VSTN[5e3], FTSN_VSS[5e4,1e5]
+
+# ___________________________________________________________________________________________________________________________
+
 # Fixed sampling size.
 FSS = int(1e5)
+#FSS = int(1e2)#for test
+
 file_path_MC_FSS = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FSS_1e5'
+#file_path_MC_FSS = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FSS_1e2_for_test'
+
 # Varied time step number.
-# FSS_VTSN = [int(x) for x in[1e0,1e1,5e1,1e2,5e2,1e3,5e3]]
-FSS_VTSN = [int(x) for x in[1e0,1e1,5e1]]
+# _________________________________________________Paste your workload here:_________________________________________________
+FSS_VTSN = [int(x) for x in[1e0,1e1,5e1,1e2,5e2,1e3,5e3]]
+
+#FSS_VTSN = [int(x) for x in[1e0,1e1]]
 # Fixed time step number.
 FTSN = int(5e3)
+# FTSN = int(5e1)
 file_path_MC_FTSN = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FTSN_5e3'
+# file_path_MC_FTSN = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FTSN_5e1_for_test'
+
 # Varied sampling size.
-# FTSN_VSS = [int(x) for x in[1e1,5e1,1e2,5e2,1e3,5e3,1e4,5e4,1e5]]
-FTSN_VSS = [int(x) for x in[1e1,5e1,1e2]]
+
+# _________________________________________________Paste your workload here:_________________________________________________
+FTSN_VSS = [int(x) for x in[1e1,5e1,1e2,5e2,1e3,5e3,1e4,5e4,1e5]]
+
+# FTSN_VSS = [int(x) for x in[1e1,5e1]]
 
 t_batch_i = torch.linspace(t_ends[0],t_ends[1],t_num,dtype=torch.double)
 
