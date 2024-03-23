@@ -156,7 +156,7 @@ with open(shell_script_path, 'w') as shell_script:
         os.makedirs(path_FSS_VTSN_i, exist_ok=True)
         torch.save(interval_setting, path_FSS_VTSN_i+'/interval_setting.pt')
         
-        script_path = 'Exercise1_2_functional.py'
+        script_path = 'Exercise1_2_parallel_MC.py'
    
         shell_script.write(f'python {script_path} {path_FSS_VTSN_i} {i} {FSS} &\n')
     
@@ -166,9 +166,10 @@ with open(shell_script_path, 'w') as shell_script:
         os.makedirs(path_FTSN_VSS_i, exist_ok=True)
         torch.save(interval_setting, path_FTSN_VSS_i+'/'+'interval_setting.pt')
         
-        script_path = 'Exercise1_2_functional.py'
+        script_path = 'Exercise1_2_parallel_MC.py'
         shell_script.write(f'python {script_path} {path_FTSN_VSS_i} {FTSN} {i} &\n')
 
 
-os.system(f"chmod +x {shell_script_path}")
+#os.system(f"chmod +x {shell_script_path}")
+        print('The run_MCs.sh file has already been created! Please run\"sh run_MCs.sh\" in the root direction to start the Monte Carlo Simulations with the specified parameters(sample_size and time_step_number). The outcomes would be stored in the correspoding sub-folders.')
 
