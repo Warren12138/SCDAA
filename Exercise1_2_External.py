@@ -156,7 +156,7 @@ with open(shell_script_path, 'w') as shell_script:
         os.makedirs(path_FSS_VTSN_i, exist_ok=True)
         torch.save(interval_setting, path_FSS_VTSN_i+'/interval_setting.pt')
         
-        script_path = 'Exercise1_2\(functional\).py'
+        script_path = 'Exercise1_2_functional.py'
    
         shell_script.write(f'python {script_path} {path_FSS_VTSN_i} {i} {FSS} &\n')
     
@@ -166,7 +166,7 @@ with open(shell_script_path, 'w') as shell_script:
         os.makedirs(path_FTSN_VSS_i, exist_ok=True)
         torch.save(interval_setting, path_FTSN_VSS_i+'/'+'interval_setting.pt')
         
-        script_path = 'Exercise1_2\(functional\).py'
+        script_path = 'Exercise1_2_functional.py'
         shell_script.write(f'python {script_path} {path_FTSN_VSS_i} {FTSN} {i} &\n')
 
 

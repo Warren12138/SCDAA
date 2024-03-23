@@ -50,7 +50,7 @@ if __name__ == '__main__':
     
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
     
-    N = 5000
+    N = 500
 
     t0 = torch.tensor(0.1,dtype = torch.double)
     
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     J_list = []
 
     times_MC = 20
-    batch_size_MC = 5000
+    batch_size_MC = 500
 
     for i in range(times_MC):
 
