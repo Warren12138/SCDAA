@@ -96,7 +96,7 @@ class LQRSolver:
         
         if sol_method == 'interpolation':
             
-            N_step = 5000
+            N_step = 100000
             
             if not (t_batch.dim() == 1 and torch.all((t_batch >= 0) & (t_batch <= 1))):
                 raise TypeError("t_batch should be a 1D tensor in which every entry is in [0,1].")
@@ -174,7 +174,7 @@ class LQRSolver:
         
         if sol_method == 'interpolation':
             
-            N_step = 5000
+            N_step = 100000
             
             if not (t_batch.dim() == 1 and torch.all((t_batch >= 0) & (t_batch <= 1))):
                 raise TypeError("t_batch should be a 1D tensor in which every entry is in [0,1].")
