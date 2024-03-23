@@ -32,17 +32,18 @@ def MonteCarloSampler(iteration, params):
 
     return J
 
-def print_progress(outer, total_outer, inner, total_inner):
+def print_progress(outer, total_outer, inner, total_inner, t_i, x_i):
     sys.stdout.write('\x1b[2J\x1b[H') 
     if outer >= 0: 
-        print("Total progress:")
+        print(f"Monte Carlo Simulation (S_size {batch_size_MC} T_step_num {N}) \n Total progress (t = {t_i} s):")
         percent_outer = outer / total_outer  
         bar_length_outer = int(30 * percent_outer)
         bar_outer = '[' + '=' * bar_length_outer + ' ' * (30 - bar_length_outer) + ']'
         print(f"{bar_outer} {percent_outer * 100:.2f}% ({outer}/{total_outer})")
     
     if inner >= 0:  
-        print("Inner progress:")
+        formatted_x = ', '.join(f'{item:.4f}' for item in x_i.flatten())
+        print(f"Inner progress (x = [{formatted_x}]):")
         percent_inner = (inner + 1) / total_inner
         bar_length_inner = int(30 * percent_inner)
         bar_inner = '[' + '=' * bar_length_inner + ' ' * (30 - bar_length_inner) + ']'
@@ -87,8 +88,8 @@ if __name__ == '__main__':
     
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
 
-    initial_tensor_file = torch.tensor([])
-    torch.save(initial_tensor_file, sys.argv[1]+'/value_MC.pt')
+    J_tensor_file = torch.tensor([])
+    torch.save(J_tensor_file, sys.argv[1]+'/value_MC.pt')
 
     for outer in range(len(t_batch_i)):
 
@@ -113,9 +114,11 @@ if __name__ == '__main__':
         'sig': sigma,
         }
 
+        pool = Pool(processes=12)
+
         for inner in range(len(x_batch_i)):
 
-            print_progress(outer, len(t_batch_i), inner, len(x_batch_i))  
+            print_progress(outer, len(t_batch_i), inner, len(x_batch_i), t_batch_i[outer], x_batch_i[inner])  
 
             X0 = x_batch_i[inner].unsqueeze(0)
             params['X0'] = X0
@@ -127,18 +130,21 @@ if __name__ == '__main__':
             for i in range(times_MC):
 
                 iterations = list(range(batch_size_MC))  
-                
-                with Pool(processes = 8) as pool:  
 
-                    J_sample = pool.starmap(MonteCarloSampler, [(iteration, params) for iteration in iterations])
+                J_sample = pool.starmap(MonteCarloSampler, [(iteration, params) for iteration in iterations])
 
                 J_sample = torch.stack(J_sample)
 
                 J_list.append(torch.mean(J_sample).unsqueeze(0))
 
             J_list_tensor = torch.cat(J_list, dim=0)
-            J_list_unadded = torch.load(sys.argv[1]+'/value_MC.pt')
-            J_list_add = torch.cat((J_list_unadded, J_list_tensor.unsqueeze(0)), dim=0)
-        print_progress(outer + 1, len(t_batch_i), -1, len(x_batch_i))  
+            #J_list_unadded = torch.load(sys.argv[1]+'/value_MC.pt')
+            J_tensor_file = torch.cat((J_tensor_file,J_list_tensor.unsqueeze(0)),dim=0)
 
-    print("\nCalculation Finished.")
+        print_progress(outer + 1, len(t_batch_i), -1, len(x_batch_i), t_batch_i[outer], x_batch_i[inner])  
+    
+    torch.save(J_tensor_file, sys.argv[1]+'/value_MC.pt')
+    pool.close()
+    pool.join()
+
+    print(f"\nMonte Carlo Simulation (S_size {batch_size_MC} T_step_num {N}) Finished.")
