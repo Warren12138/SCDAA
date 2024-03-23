@@ -40,12 +40,6 @@ t_num = 9
 x_ends = [[0.1,0.9],[0.1,0.9]]
 x_num = [5,5] # alleviate the calculation workload.
 
-# load_interval_setting = torch.load('Exercise1_2/value_numerical/?x?/'+'interval_setting.pt')
-# t_ends = load_interval_setting['t_ends']
-# t_num = load_interval_setting['t_num']
-# x_ends = load_interval_setting['x_ends']
-# x_num = load_interval_setting['x_num']
-
 file_path_numerical = file_path_Ex1_2 + '/' + f'value_numerical/{x_num[0]}x{x_num[1]}'
 os.makedirs(file_path_numerical, exist_ok=True)
 
@@ -68,7 +62,7 @@ x_batch = torch.cartesian_prod(x1, x2).unsqueeze(1).repeat(t_num, 1, 1)
 
 value_numerical = solver.value_function(t_batch,x_batch)
 
-#Preparing data for graph.
+# Preparing data for graph.
 
 value_min = torch.min(value_numerical).numpy()
 value_max = torch.max(value_numerical).numpy()
@@ -98,14 +92,14 @@ x_num = load_interval_setting['x_num']
 # Fixed sampling size.
 FSS = int(1e5)
 file_path_MC_FSS = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FSS_1e5'
-#Varied time step number.
-#FSS_VTSN = [int(x) for x in[1e0,1e1,5e1,1e2,5e2,1e3,5e3]]
+# Varied time step number.
+# FSS_VTSN = [int(x) for x in[1e0,1e1,5e1,1e2,5e2,1e3,5e3]]
 FSS_VTSN = [int(x) for x in[1e0,1e1,5e1]]
 # Fixed time step number.
 FTSN = int(5e3)
 file_path_MC_FTSN = file_path_Ex1_2 + '/' + f'value_MC/{x_num[0]}x{x_num[1]}/FTSN_5e3'
-#Varied sampling size.
-#FTSN_VSS = [int(x) for x in[1e1,5e1,1e2,5e2,1e3,5e3,1e4,5e4,1e5]]
+# Varied sampling size.
+# FTSN_VSS = [int(x) for x in[1e1,5e1,1e2,5e2,1e3,5e3,1e4,5e4,1e5]]
 FTSN_VSS = [int(x) for x in[1e1,5e1,1e2]]
 
 t_batch_i = torch.linspace(t_ends[0],t_ends[1],t_num,dtype=torch.double)
@@ -121,26 +115,6 @@ interval_setting = {
     'x_ends': x_ends,
     'x_num': x_num
 }
-
-# for i in FSS_VTSN:
-#     if i == 1:
-#         trvlthg = ''
-#     else:
-#         trvlthg = 's'
-#     path_FSS_VTSN_i = file_path_MC_FSS+'/'+ str(i) + '_step'+ trvlthg
-#     os.makedirs(path_FSS_VTSN_i, exist_ok=True)
-#     torch.save(interval_setting, path_FSS_VTSN_i+'/'+'interval_setting.pt')
-#     script_path = 'Exercise1_2(functional).py'
-#     #script_path = 'test.py'
-#     os.system(f'python "{script_path}" "{path_FSS_VTSN_i}" "{str(i)}" "{str(FSS)}"')
-    
- 
-# for i in FTSN_VSS:
-#     path_FTSN_VSS_i = file_path_MC_FTSN+'/'+ str(i) + '_samples'
-#     os.makedirs(path_FTSN_VSS_i, exist_ok=True)
-#     torch.save(interval_setting, path_FTSN_VSS_i+'/'+'interval_setting.pt')
-#     script_path = 'Exercise1_2(functional).py'
-#     os.system(f'python "{script_path}" "{path_FTSN_VSS_i}" "{str(FTSN)}" "{str(i)}"')
 
 shell_script_path = "run_MCs.sh"
 
@@ -171,5 +145,5 @@ with open(shell_script_path, 'w') as shell_script:
 
 
 #os.system(f"chmod +x {shell_script_path}")
-        print('The run_MCs.sh file has already been created! Please run\"sh run_MCs.sh\" in the root direction to start the Monte Carlo Simulations with the specified parameters(sample_size and time_step_number). The outcomes would be stored in the correspoding sub-folders.')
+print('The run_MCs.sh file has already been created! Please run\"sh run_MCs.sh\" in the root direction to start the Monte Carlo Simulations with the specified parameters(sample_size and time_step_number). The outcomes would be stored in the correspoding sub-folders.')
 
