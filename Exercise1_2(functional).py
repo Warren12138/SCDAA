@@ -88,7 +88,7 @@ if __name__ == '__main__':
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
 
     initial_tensor_file = torch.tensor([])
-    torch.save(initial_tensor_file, sys.argv[1]+'value_MC.pt')
+    torch.save(initial_tensor_file, sys.argv[1]+'/value_MC.pt')
 
     for outer in range(len(t_batch_i)):
 
@@ -137,7 +137,7 @@ if __name__ == '__main__':
                 J_list.append(torch.mean(J_sample).unsqueeze(0))
 
             J_list_tensor = torch.cat(J_list, dim=0)
-            J_list_unadded = torch.load(initial_tensor_file, sys.argv[1]+'value_MC.pt')
+            J_list_unadded = torch.load(sys.argv[1]+'/value_MC.pt')
             J_list_add = torch.cat((J_list_unadded, J_list_tensor.unsqueeze(0)), dim=0)
         print_progress(outer + 1, len(t_batch_i), -1, len(x_batch_i))  
 
