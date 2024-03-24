@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from Exercise1_1 import LQRSolver
 from torch.multiprocessing import Pool, set_start_method
+import time
 
 def MonteCarloSampler(iteration, params):
     
@@ -39,6 +40,8 @@ if __name__ == '__main__':
     except RuntimeError:
         pass
     
+    start_time = time.perf_counter()
+
     H = torch.tensor([[1.2, 0.8], [-0.6, 0.9]], dtype=torch.double)
     M = torch.tensor([[0.5,0.7], [0.3,1.0]], dtype=torch.double)
     sigma = torch.tensor([[[0.8],[1.1]]], dtype=torch.double) 
@@ -81,7 +84,7 @@ if __name__ == '__main__':
 
     times_MC = 20
     batch_size_MC = 500
-
+    
     for i in range(times_MC):
 
         iterations = list(range(batch_size_MC))  
@@ -100,3 +103,6 @@ if __name__ == '__main__':
 
     print(f"The optimal values from {times_MC} time(s) of Monte Carlo Simulation (batch size {batch_size_MC} for each run) is：\n \n{torch.sort(J_list_tensor)[0]} \n")
 
+    end_time = time.perf_counter()
+
+    print(f"Running time: {end_time - start_time} s.")
