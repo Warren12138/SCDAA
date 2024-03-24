@@ -125,7 +125,7 @@ if __name__ == '__main__':
     
             J_list = []
 
-            times_MC = 10
+            times_MC = 1
 
             for i in range(times_MC):
 

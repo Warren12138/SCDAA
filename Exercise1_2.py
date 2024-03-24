@@ -3,8 +3,9 @@
 import numpy as np
 import torch
 from Exercise1_1 import LQRSolver
-from torch.multiprocessing import Pool, set_start_method
+from torch.multiprocessing import Pool, set_start_method, Value, Lock
 import time
+import sys
 
 def MonteCarloSampler(iteration, params):
     
@@ -19,7 +20,7 @@ def MonteCarloSampler(iteration, params):
     multX = params['multX']
     multa = params['multa']
     sig = params['sig']
-         
+
     X_0_N = X0
     
     for i in range(N-1):
@@ -30,7 +31,7 @@ def MonteCarloSampler(iteration, params):
     alp = multa@X_0_N.transpose(1,2)
     int_ = X_0_N@C@X_0_N.transpose(1,2) + alp.transpose(1,2)@D@alp
     J = X_0_N[-1]@R@X_0_N[-1].T + torch.tensor(0.5)*dt@((int_.squeeze(1)[1:]+int_.squeeze(1)[:-1]))
-
+    
     return J
 
 if __name__ == '__main__':
@@ -53,8 +54,9 @@ if __name__ == '__main__':
     
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
     
-    N = 500
-
+    N = int(5e3)
+    #batch_size_MC = int(5e3)
+    batch_size_MC = int(100000)
     t0 = torch.tensor(0.1,dtype = torch.double)
     
     time_grid_for_MC = torch.linspace(t0,T,N,dtype = torch.double)
@@ -82,16 +84,15 @@ if __name__ == '__main__':
     
     J_list = []
 
-    times_MC = 20
-    batch_size_MC = 500
+    times_MC = 1
     
+    pool = Pool(processes = 8)
+
     for i in range(times_MC):
 
-        iterations = list(range(batch_size_MC))  
-        
-        with Pool(processes = 10) as pool:  
+        iterations = list(range(batch_size_MC))    
 
-            J_sample = pool.starmap(MonteCarloSampler, [(iteration, params) for iteration in iterations])
+        J_sample = pool.starmap(MonteCarloSampler, [(iteration, params) for iteration in iterations])
 
         J_sample = torch.stack(J_sample)
 
