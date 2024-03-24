@@ -113,7 +113,7 @@ if __name__ == '__main__':
         'S': S,
         'sig': sigma,
         }
-
+        #change to each oneself's cpu core numbers.
         pool = Pool(processes = 8)
 
         for inner in range(len(x_batch_i)):
