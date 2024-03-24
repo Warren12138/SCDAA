@@ -35,7 +35,7 @@ def MonteCarloSampler(iteration, params):
 def print_progress(outer, total_outer, inner, total_inner, t_i, x_i):
     sys.stdout.write('\x1b[2J\x1b[H') 
     if outer >= 0: 
-        print(f"Monte Carlo Simulation (S_size {batch_size_MC} T_step_num {N}) \n Total progress (t = {t_i:.4f} s):")
+        print(f"Monte Carlo Simulation (S_size {batch_size_MC} T_step_num {N}) \nTotal progress (t = {t_i:.4f} s):")
         percent_outer = outer / total_outer  
         bar_length_outer = int(30 * percent_outer)
         bar_outer = '[' + '=' * bar_length_outer + ' ' * (30 - bar_length_outer) + ']'
@@ -114,7 +114,7 @@ if __name__ == '__main__':
         'sig': sigma,
         }
 
-        pool = Pool(processes=12)
+        pool = Pool(processes = 8)
 
         for inner in range(len(x_batch_i)):
 

@@ -8,6 +8,9 @@ S2559490 Zheyan Lu
 S2601126 Yuebo Yang
 
 ## How to run the code
+
+The suggested way is firstly to clone this project to a local folder and then build an environment by installing all the dependencies noted in the requirements.txt. Then run the codes along the instructions of each.
+
 ## Linear Quadratic Regulator
 ### Exercise 1.1
 
