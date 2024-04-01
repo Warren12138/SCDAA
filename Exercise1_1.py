@@ -1,4 +1,3 @@
-#All input should be of dtype: torch.double.
 import torch
 import numpy as np
 from scipy.interpolate import CubicSpline
@@ -25,6 +24,7 @@ class LQRSolver:
         self.R = R
         self.T = T
         self.method = method 
+        self.N_step = 10000
     
     def is_positive_definite(self, matrix):
         
@@ -96,7 +96,7 @@ class LQRSolver:
         
         if sol_method == 'interpolation':
             
-            N_step = 100000
+            N_step = 2*self.N_step
             
             if not (t_batch.dim() == 1 and torch.all((t_batch >= 0) & (t_batch <= 1))):
                 raise TypeError("t_batch should be a 1D tensor in which every entry is in [0,1].")
@@ -119,6 +119,7 @@ class LQRSolver:
             S_c_spl = CubicSpline(time_grid_for_intpl_np, S_tensor_tensor_for_intpl_np)
             
             traces = torch.einsum('bii->b', self.sigma @ self.sigma.transpose(1,2) @ S_tensor_tensor_for_intpl).unsqueeze(1).unsqueeze(2)
+            
             trace_cubic = CubicSpline(time_grid_for_intpl_np, traces.numpy())
             
             def S_intpl(t_batch_np_in):
@@ -128,11 +129,23 @@ class LQRSolver:
             x_batch_T = x_batch.transpose(1, 2) 
             
             xTSx = x_batch @ S_t_s @ x_batch_T
-            
-            
+
             for i in range(len(t_batch_np)):
-                intgl, error = quad(trace_cubic, t_batch_np[i], self.T)
-                xTSx[i,0]+= intgl
+                
+                t1_index = (time_grid_for_intpl > t_batch[i]).nonzero(as_tuple=True)[0].min().item() if (time_grid_for_intpl > t_batch[i]).any() else None
+                time_grid_after_t1 = time_grid_for_intpl[t1_index:]
+                dt_t1 = time_grid_after_t1[0] - t_batch[i]
+                dt_after_t1 = time_grid_after_t1[1:]-time_grid_after_t1[:-1]
+                traces_after_t1 = traces[t1_index:]
+                
+                traces_after_t1_for_int = torch.tensor(0.5,dtype=torch.double)*(traces_after_t1[1:]+traces_after_t1[:-1])
+                int_t1 = torch.tensor(0.5,dtype=torch.double)*(torch.from_numpy(trace_cubic(t_batch_np[i])).to(dtype=torch.double)+traces_after_t1[0])
+
+
+
+                intgl = (dt_t1*int_t1).squeeze() + (dt_after_t1.view(1, -1)@traces_after_t1_for_int.squeeze(1))
+
+                xTSx[i,0]+= intgl.squeeze()
             
             v_tx = xTSx.squeeze()
             
@@ -147,7 +160,7 @@ class LQRSolver:
                 if not (x_batch.dim() == 3 and x_batch.size()[0] == len(t_batch) and x_batch.size()[1] == 1 and x_batch.size()[2] == self.H.size()[0]):
                     raise TypeError("x_batch should have shape (%d, 1, %d)."%(len(t_batch),self.H.size(2)))
 
-            time_grids = torch.stack([torch.linspace(float(t), self.T, 5000, dtype=torch.double) for t in t_batch])
+            time_grids = torch.stack([torch.linspace(float(t), self.T, self.N_step, dtype=torch.double) for t in t_batch])
 
             S_tensor_tensor = self.solve_riccati_ode(time_grids)
             #print(S_tensor_tensor.shape)
@@ -167,14 +180,14 @@ class LQRSolver:
             integral_part = dts @ trace_for_int
 
             v_tx = xTSx.squeeze() + torch.diag(integral_part).squeeze()
-        
+
         return v_tx
 
     def markov_control(self, t_batch, x_batch, sol_method = 'interpolation'):
         
         if sol_method == 'interpolation':
             
-            N_step = 100000
+            N_step = 2*self.N_step
             
             if not (t_batch.dim() == 1 and torch.all((t_batch >= 0) & (t_batch <= 1))):
                 raise TypeError("t_batch should be a 1D tensor in which every entry is in [0,1].")
@@ -218,7 +231,7 @@ class LQRSolver:
                 if not (x_batch.dim() == 3 and x_batch.size()[0] == len(t_batch) and x_batch.size()[1] == 1 and x_batch.size()[2] == self.H.size()[0]):
                     raise TypeError("x_batch should have shape (%d, 1, %d)."%(len(t_batch),self.H.size(2)))
 
-            time_grids = torch.stack([torch.linspace(float(t), self.T, 5000, dtype=torch.double) for t in t_batch])
+            time_grids = torch.stack([torch.linspace(float(t), self.T, self.N_step, dtype=torch.double) for t in t_batch])
 
             S_tensor_tensor = self.solve_riccati_ode(time_grids)
 
