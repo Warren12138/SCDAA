@@ -107,7 +107,7 @@ class LQRSolver:
             time_grid = torch.stack([torch.linspace(0, self.T, N_step, dtype=torch.double) for i in [0]])
             
             S_tensor_tensor = self.solve_riccati_ode(time_grid)
-            
+
             index_s_1 = torch.searchsorted(time_grid[0,:], torch.min(t_batch), right=True) - 1
             time_grid_for_intpl = time_grid[0,index_s_1:]
             S_tensor_tensor_for_intpl = S_tensor_tensor[0,index_s_1:]

@@ -2,6 +2,9 @@
 import sys
 import numpy as np
 import torch
+import scipy
+from scipy.interpolate import CubicSpline
+from scipy.interpolate import PchipInterpolator
 from Exercise1_1 import LQRSolver
 from torch.multiprocessing import Pool, set_start_method
 import time
@@ -21,12 +24,16 @@ def MonteCarloSampler(iteration, params):
          
     X_0_N = X0
     
-    for i in range(N-1):
+    for i in range(N):
         
         X_next = ((torch.eye(2)+ dt[i]*(H + multX@S[i]))@ X_0_N[i:].transpose(1,2)+sig*torch.sqrt(dt[i])*torch.randn(1)).transpose(1,2)
         X_0_N = torch.cat((X_0_N, X_next), dim=0)
 
     alp = multa@X_0_N.transpose(1,2)
+
+    #print('shape of alpha is', alp.shape)
+    #print('shape of X is', X_0_N.shape)
+
     int_ = X_0_N@C@X_0_N.transpose(1,2) + alp.transpose(1,2)@D@alp
     J = X_0_N[-1]@R@X_0_N[-1].T + torch.tensor(0.5)*dt@((int_.squeeze(1)[1:]+int_.squeeze(1)[:-1]))
 
@@ -88,17 +95,23 @@ if __name__ == '__main__':
     
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
 
+    time_grid_for_S = torch.stack([torch.linspace(0, T, 100000, dtype=torch.double) for i in [0]])
+    S_for_spline = solver.solve_riccati_ode(time_grid_for_S).squeeze().numpy()
+    S_c_spl = PchipInterpolator((time_grid_for_S[0,:]).numpy(), S_for_spline)
+
     J_tensor_file = torch.tensor([])
     torch.save(J_tensor_file, sys.argv[1]+'/value_MC.pt')
 
     for outer in range(len(t_batch_i)):
 
         t0 = t_batch_i[outer]
-        time_grid_for_MC = torch.linspace(t0,T,N,dtype = torch.double)
+        time_grid_for_MC = torch.linspace(t0,T,N+1,dtype = torch.double)
         dt_for_MC = time_grid_for_MC[1:]-time_grid_for_MC[:-1]
-        S = solver.solve_riccati_ode(time_grid_for_MC.unsqueeze(0)).squeeze()
-        multp_X = - M@torch.linalg.inv(D)@M.T
-        multp_alp = - torch.linalg.inv(D)@M.T@S
+        
+        S = torch.from_numpy(S_c_spl(time_grid_for_MC.numpy())).to(torch.double)
+
+        multX = - M@torch.linalg.inv(D)@M.T
+        multa = - torch.linalg.inv(D)@M.T@S
         params = {
         'C': C,
         'D': D,
@@ -108,8 +121,8 @@ if __name__ == '__main__':
         'X0': 0,
         'H': H,
         'dt': dt_for_MC,
-        'multX': multp_X,
-        'multa':multp_alp,
+        'multX': multX,
+        'multa':multa,
         'S': S,
         'sig': sigma,
         }
