@@ -54,7 +54,7 @@ if __name__ == '__main__':
     
     solver = LQRSolver(H, M, sigma, C, D, R, T, method)
     
-    N = int(5e3)
+    N = int(5e1)
     #batch_size_MC = int(5e3)
     batch_size_MC = int(100000)
     t0 = torch.tensor(0.1,dtype = torch.double)
@@ -78,7 +78,6 @@ if __name__ == '__main__':
     'dt': dt_for_MC,
     'multX': multp_X,
     'multa':multp_alp,
-    'S': S,
     'sig': sigma,
     }
     
