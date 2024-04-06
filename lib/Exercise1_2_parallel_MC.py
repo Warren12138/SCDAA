@@ -5,7 +5,7 @@ import torch
 import scipy
 from scipy.interpolate import CubicSpline
 from scipy.interpolate import PchipInterpolator
-from Exercise1_1 import LQRSolver
+from lib.Exercise1_1 import LQRSolver
 from torch.multiprocessing import Pool, set_start_method
 import time
 def MonteCarloSampler(iteration, params):

@@ -1,7 +1,7 @@
 
 import torch
-from Exercise1_1_MPS import LQRSolver_MPS
-from Exercise1_1 import LQRSolver
+from lib.Exercise1_1_MPS import LQRSolver_MPS
+from lib.Exercise1_1 import LQRSolver
 
 H = torch.tensor([[1.2, 0.8], [-0.6, 0.9]], dtype=torch.float32, device = 'mps')
 M = torch.tensor([[0.5,0.7], [0.3,1.0]], dtype=torch.float32, device = 'mps')

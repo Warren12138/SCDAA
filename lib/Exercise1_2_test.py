@@ -2,7 +2,7 @@
 
 import numpy as np
 import torch
-from Exercise1_1 import LQRSolver
+from lib.Exercise1_1 import LQRSolver
 from torch.multiprocessing import Pool, set_start_method, Value, Lock
 import time
 import sys
