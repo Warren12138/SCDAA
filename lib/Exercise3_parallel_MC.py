@@ -81,7 +81,7 @@ if __name__ == '__main__':
 
     x_batch_i = torch.cartesian_prod(x1, x2).unsqueeze(1)
 
-    file_path_Ex1_2 = f'Exercise1_2'
+    file_path_Ex1_2 = f'Exercise3'
     init_for_solver = torch.load(file_path_Ex1_2+'/'+'initialization_for_solver.pt')
     
     H = init_for_solver['H']
