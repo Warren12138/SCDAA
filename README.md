@@ -89,7 +89,50 @@ For Exercise 1.1 there are a __*.ipynb file__ and a __*.py file__.
     
     
 ### Exercise 1.2
-Something
+#### Exercise 1.2 Simulation Analysis 
+
+#### Overview
+
+This document details the setup, execution, and analysis of Monte Carlo simulations for Exercise 1.2. The simulations evaluate numerical solutions' convergence under varying parameters, focusing on sample size and time steps, to understand their effects on simulation reliability and accuracy.
+
+#### File Structure
+
+- `Exercise1_2/`: Main directory.
+  - `value_numerical/`: Stores solver-obtained numerical values.
+  - `value_MC/`: Contains Monte Carlo simulation results.
+    - `FSS_1e5/` and `FTSN_5e3/`: Subdirectories for fixed sampling size and fixed time step number experiments, respectively.
+  - `lib/`: Contains essential Python scripts.
+    - `Exercise1_2_parallel_MC.py`: Runs parallel Monte Carlo simulations.
+
+#### Simulation Settings
+
+Two settings explore the impact of varying parameters:
+
+- **Fixed Sampling Size (FSS):** Analyzes time discretization granularity's effect by varying time steps with a fixed sample number.
+- **Fixed Time Step Number (FTSN):** Examines the influence of increasing sample size on solution accuracy with a constant number of time steps.
+
+#### Running Simulations
+
+Execute the `run_MCs.sh` script from the root directory to start all specified simulations. Results will be stored in the `value_MC/` directory, under corresponding sub-folders for each experiment.
+
+#### Analysis and Visualization
+
+Post-simulation, data is analyzed to observe convergence behaviors:
+
+- **Sample Size Impact:** Log-log plots depict how solution accuracy improves with larger sample sizes.
+- **Time Steps Impact:** Similar plots show accuracy changes with more granular time steps.
+
+Plots are saved in EPS and PNG formats for quality and accessibility.
+
+#### Requirements
+
+Ensure Python 3 and dependencies (`torch`, `matplotlib`, `numpy`) are installed.
+
+#### Conclusion
+
+This README guides through Monte Carlo simulations for Exercise 1.2, highlighting the importance of sample size and time steps on numerical solution convergence and accuracy.
+
+
 ## Supervised learning, checking the NNs are good enough
 ### Exercise 2.1
 Something
@@ -98,7 +141,7 @@ Something
 ## Deep Galerkin approximation for a linear PDE
 ### Exercise 3.1
 Something
-## Deep Galerkin approximation for a linear PDE
-### Exercise 3.1
+## Policy iteration with DGM
+### Exercise 4.1
 Something
 
