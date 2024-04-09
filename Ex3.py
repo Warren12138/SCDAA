@@ -224,7 +224,7 @@ def new_data(num_samples):
 def main():
     model_DGM = DGMNN_YYBver().double()
     optimizer_DGM = torch.optim.Adam(model_DGM.parameters(), lr=0.0001)
-    scheduler_DGM = lr_scheduler.ExponentialLR(optimizer_DGM, gamma=0.9)
+    scheduler_DGM = lr_scheduler.ExponentialLR(optimizer_DGM, gamma=0.95)
 
 
     continue_training = input("Do you want to continue training or start a new one? (c/n): ").lower() == 'c'
@@ -239,7 +239,7 @@ def main():
         print("Continuing training from saved state.")
     else:
         print("Starting training from scratch.")
-
+    
     epoch_losses = []
 
     iterations = 50
@@ -251,7 +251,7 @@ def main():
 
     filename = f'Ex3_training_loss_{timestamp}.dat'
 
-    with open('filename', 'w') as f:
+    with open(filename, 'w') as f:
 
         for iteration in range(iterations):
             print(f'Iteration {iteration+1}/{iterations}'+'\n')
@@ -272,7 +272,9 @@ def main():
                     optimizer_DGM.zero_grad()
                     t_data = _t_data.clone().requires_grad_(True)
                     x_data = _x_data.clone().requires_grad_(True)
-                    loss = total_residual(model_DGM, t_data, x_data) 
+                    loss = total_residual(model_DGM, t_data, x_data)
+
+                    loss.backward(retain_graph = True)
                     loss.backward()
                     optimizer_DGM.step()
                     total_loss += loss.item()
@@ -295,7 +297,7 @@ def main():
                 if epoch == 0 or (epoch+1) % 5 == 0:
                     print(f'Epoch {epoch+1}/{epochs} \t Loss: {avg_loss}')
                 
-                
+                 
                 if patience_counter >= patience:
                     print(f'Early stopping triggered at epoch {epoch+1}')
                     break  
