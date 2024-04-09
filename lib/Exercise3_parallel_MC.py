@@ -15,12 +15,9 @@ def MonteCarloSampler(iteration, params):
     M = params['M']
     N = params['N']
     R = params['R']
-    # S = params['S']
     X0 = params['X0']
     H = params['H']
     dt = params['dt']
-    #multX = params['multX']
-    #multa = params['multa']
     sig = params['sig']
     alpha = params['alpha']
 
@@ -31,8 +28,6 @@ def MonteCarloSampler(iteration, params):
         X_next = ((torch.eye(2)+ dt[i]*(H + M@alpha))@ X_0_N[i:].transpose(1,2)+sig*torch.sqrt(dt[i])*torch.randn(1)).transpose(1,2)
         X_0_N = torch.cat((X_0_N, X_next), dim=0)
 
-    #print('shape of alpha is', alp.shape)
-    #print('shape of X is', X_0_N.shape)
 
     int_ = X_0_N@C@X_0_N.transpose(1,2) + alpha.transpose(1,2)@D@alpha
     J = X_0_N[-1]@R@X_0_N[-1].T + torch.tensor(0.5)*dt@((int_.squeeze(1)[1:]+int_.squeeze(1)[:-1]))
@@ -94,11 +89,6 @@ if __name__ == '__main__':
     T = init_for_solver['T']
     method = init_for_solver['method']
     
-    # solver = LQRSolver(H, M, sigma, C, D, R, T, method)
-
-    # time_grid_for_S = torch.stack([torch.linspace(0, T, 100000, dtype=torch.double) for i in [0]])
-    # S_for_spline = solver.solve_riccati_ode(time_grid_for_S).squeeze().numpy()
-    # S_c_spl = PchipInterpolator((time_grid_for_S[0,:]).numpy(), S_for_spline)
 
     J_tensor_file = torch.tensor([])
     torch.save(J_tensor_file, sys.argv[1]+'/value_MC.pt')
@@ -109,10 +99,6 @@ if __name__ == '__main__':
         time_grid_for_MC = torch.linspace(t0,T,N+1,dtype = torch.double)
         dt_for_MC = time_grid_for_MC[1:]-time_grid_for_MC[:-1]
         
-        #S = torch.from_numpy(S_c_spl(time_grid_for_MC.numpy())).to(torch.double)
-
-        # multX = - M@torch.linalg.inv(D)@M.T
-        # multa = - torch.linalg.inv(D)@M.T@S
         params = {
         'C': C,
         'D': D,
