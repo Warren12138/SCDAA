@@ -229,7 +229,7 @@ def main():
 
     continue_training = input("Do you want to continue training or start a new one? (c/n): ").lower() == 'c'
 
-    model_save_path = 'model3_DGM_state_dict.pt'
+    model_save_path = 'model_YYB_DGM_state_dict.pt'
     optimizer_save_path = 'optimizer_DGM_state.pt'
 
     if continue_training and os.path.exists(model_save_path) and os.path.exists(optimizer_save_path):
