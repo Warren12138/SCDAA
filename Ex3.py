@@ -6,8 +6,11 @@ from lib.Exercise1_1 import LQRSolver
 from torch.utils.data import TensorDataset, DataLoader
 import torch.optim.lr_scheduler as lr_scheduler
 
+import os
+from datetime import datetime
+
 Proj_dtype = torch.double
-Proj_device = 'cpu' 
+Proj_device = 'cpu'
 
 class DGMhiddenlayerYYBver(nn.Module):
 
@@ -219,74 +222,85 @@ def new_data(num_samples):
     return t_samples,x_samples
 
 def main():
-    # Define matrices for LQR problem
-
     model_DGM = DGMNN_YYBver().double()
-
-    # stat_dict = torch.load('model2_DGM_state_dict.pt', map_location=torch.device('cpu'))
-    # model_DGM.load_state_dict(stat_dict)
-
-    # model_DGM = DGMNN().float().to(Proj_device)
-    # Prepare for training
     optimizer_DGM = torch.optim.Adam(model_DGM.parameters(), lr=0.0001)
     scheduler_DGM = lr_scheduler.ExponentialLR(optimizer_DGM, gamma=0.9)
 
 
+    continue_training = input("Do you want to continue training or start a new one? (c/n): ").lower() == 'c'
+
+    model_save_path = 'model3_DGM_state_dict.pt'
+    optimizer_save_path = 'optimizer_DGM_state.pt'
+
+    if continue_training and os.path.exists(model_save_path) and os.path.exists(optimizer_save_path):
+        
+        model_DGM.load_state_dict(torch.load(model_save_path))
+        optimizer_DGM.load_state_dict(torch.load(optimizer_save_path))
+        print("Continuing training from saved state.")
+    else:
+        print("Starting training from scratch.")
+
     epoch_losses = []
 
-    iterations = 5000
+    iterations = 50
     epochs = 100
 
-    patience = 20
+    patience = 10
 
+    timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-    for iteration in range(iterations):
-    
-        print(f'Iteration {iteration+1}/{iterations}'+'\n')
-        
-        t_data,x_data = new_data(1000)
-        dataset = TensorDataset(t_data,x_data)
-        dataloader = DataLoader(dataset, batch_size=512, shuffle=True, num_workers=4)
+    filename = f'Ex3_training_loss_{timestamp}.dat'
 
-        best_loss = float('inf')
-        patience_counter = 0  
+    with open('filename', 'w') as f:
 
-        for epoch in range(epochs):
-
-            model_DGM.train()
-            total_loss = 0
+        for iteration in range(iterations):
+            print(f'Iteration {iteration+1}/{iterations}'+'\n')
             
-            for batch_idx, (_t_data,_x_data) in enumerate(dataloader):
-                optimizer_DGM.zero_grad()
-                t_data = _t_data.clone().requires_grad_(True)
-                x_data = _x_data.clone().requires_grad_(True)
-                loss = total_residual(model_DGM, t_data, x_data) 
-                loss.backward()
-                #loss.backward(retain_graph=True)
-                optimizer_DGM.step()
-                total_loss += loss.item()
+            t_data,x_data = new_data(1000)
+            dataset = TensorDataset(t_data,x_data)
+            dataloader = DataLoader(dataset, batch_size=512, shuffle=True)
 
-            avg_loss = total_loss / len(dataloader)
-            epoch_losses.append(avg_loss)
-            
-            scheduler_DGM.step()
+            best_loss = float('inf')
+            patience_counter = 0  
 
-            if avg_loss < best_loss:
-                best_loss = avg_loss
-                patience_counter = 0  
-                torch.save(model_DGM.state_dict(), 'model_DGM_by_YYB_state_dict.pt')
-            else:
-                patience_counter += 1
+            for epoch in range(epochs):
 
-            if epoch == 0 or (epoch+1) % 5 == 0:
-                print(f'Epoch {epoch+1}/{epochs} \t Loss: {avg_loss}')
+                model_DGM.train()
+                total_loss = 0
+                
+                for batch_idx, (_t_data,_x_data) in enumerate(dataloader):
+                    optimizer_DGM.zero_grad()
+                    t_data = _t_data.clone().requires_grad_(True)
+                    x_data = _x_data.clone().requires_grad_(True)
+                    loss = total_residual(model_DGM, t_data, x_data) 
+                    loss.backward()
+                    optimizer_DGM.step()
+                    total_loss += loss.item()
+                
+                avg_loss = total_loss / len(dataloader)
+                epoch_losses.append(avg_loss)
+                
+                scheduler_DGM.step()
+
+                f.write(f'Iteration {iteration+1}, Epoch {epoch+1}, Loss: {avg_loss}\n')
+
+                if avg_loss < best_loss:
+                    best_loss = avg_loss
+                    patience_counter = 0  
+                    torch.save(model_DGM.state_dict(), model_save_path)
+                    torch.save(optimizer_DGM.state_dict(), optimizer_save_path)
+                else:
+                    patience_counter += 1
+
+                if epoch == 0 or (epoch+1) % 5 == 0:
+                    print(f'Epoch {epoch+1}/{epochs} \t Loss: {avg_loss}')
+                
+                
+                if patience_counter >= patience:
+                    print(f'Early stopping triggered at epoch {epoch+1}')
+                    break  
+            print('\n')
             
-            
-            if patience_counter >= patience:
-                print(f'Early stopping triggered at epoch {epoch+1}')
-                break  
-        print('\n')
-        
     model_DGM.eval()
 
 if __name__ == '__main__':
