@@ -136,7 +136,7 @@ This README guides through Monte Carlo simulations for Exercise 1.2, highlightin
 
 
 ## Supervised learning, checking the NNs are good enough
-### Exercise 2.1
+### Exercise 2.1 and Exercise 2.2
 In this section of our project, we explore the approximation of Linear Quadratic Regulator (LQR) solutions using neural networks. We focus on two main aspects: approximating the value function and the optimal control policy through deep learning models. Below, we outline the methodology, code structure, and results obtained from our experiments.
 
 ## Overview
@@ -167,8 +167,7 @@ The goal of Exercise 2 is to demonstrate the capability of neural networks in ap
 
 The training process demonstrates the neural networks' ability to learn the underlying patterns in the LQR solutions. The final visualizations provide a clear comparison between the approximations made by the neural networks and the actual solutions, showcasing the effectiveness of deep learning in solving such problems.
 
-### Exercise 2.2
-Something
+
 ## Deep Galerkin approximation for a linear PDE
 ### Exercise 3.1
 Something
