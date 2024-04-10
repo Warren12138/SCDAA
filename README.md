@@ -170,7 +170,32 @@ The training process demonstrates the neural networks' ability to learn the unde
 
 ## Deep Galerkin approximation for a linear PDE
 ### Exercise 3.1
-Something
+
+#### Overview
+
+This section of the project applies deep learning techniques to solve Linear Quadratic Regulator (LQR) problems. Using Deep Generative Models (DGM), we aim to approximate the value function and control actions for a given LQR setup. The project showcases the power of neural networks in handling complex dynamic systems and control tasks.
+
+The main components of this project include model definition, training, and evaluation against Monte Carlo simulations for verification. Here is a brief guide on how to use the scripts included in this project:
+
+### Model Training
+
+1. **Define the Neural Network Models**: The models for approximating the value function and control actions are defined in `DGMNN.py` and `MarkovControlNN.py`, respectively.
+
+2. **Generate Training Data**: Use the `new_data` function to generate synthetic data samples for training the models.
+
+3. **Train the Models**: Run the training script with appropriate hyperparameters and data. Training progress will be saved, and the model's state dict can be exported for later use.
+
+### Evaluation
+
+- **Load Trained Models**: Load the models' state dicts and prepare them for evaluation.
+
+- **Compare with Monte Carlo Simulations**: Evaluate the models' outputs against the results from Monte Carlo simulations for verification.
+
+### Visualization
+
+- Plot the training loss over epochs to assess the learning progress.
+- Compare the predicted value functions and control actions with those from Monte Carlo simulations visually.
+
 ## Policy iteration with DGM
 ### Exercise 4.1
 Something
