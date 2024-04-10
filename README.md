@@ -91,6 +91,8 @@ For Exercise 1.1 there are a __*.ipynb file__ and a __*.py file__.
 ### Exercise 1.2
 #### Exercise 1.2 Simulation Analysis 
 
+For Exercise 1.2 there is a __*.ipynb file_. 
+
 #### Overview
 
 This document details the setup, execution, and analysis of Monte Carlo simulations for Exercise 1.2. The simulations evaluate numerical solutions' convergence under varying parameters, focusing on sample size and time steps, to understand their effects on simulation reliability and accuracy.
@@ -135,7 +137,36 @@ This README guides through Monte Carlo simulations for Exercise 1.2, highlightin
 
 ## Supervised learning, checking the NNs are good enough
 ### Exercise 2.1
-Something
+In this section of our project, we explore the approximation of Linear Quadratic Regulator (LQR) solutions using neural networks. We focus on two main aspects: approximating the value function and the optimal control policy through deep learning models. Below, we outline the methodology, code structure, and results obtained from our experiments.
+
+## Overview
+
+The goal of Exercise 2 is to demonstrate the capability of neural networks in approximating complex functions within the context of control theory. Specifically, we address the LQR problem, a fundamental problem in control theory for designing optimal controllers.
+
+## Methodology
+
+1. **Data Generation**: We generate synthetic data that represents different states and time samples for the LQR problem. This data serves as the input for training our neural networks.
+   
+2. **Neural Network Models**:
+    - `ValueFunctionNN`: A model that approximates the value function of the LQR problem.
+    - `MarkovControlNN`: A model designed to approximate the optimal control policy.
+
+3. **Training**: Both models are trained using a dataset comprising state, time, and either value or control samples. We use the Mean Squared Error (MSE) as the loss function and Adam as the optimizer.
+
+4. **Visualization**: After training, we visually compare the neural network approximations with the theoretical solutions to evaluate the models' performance.
+
+## Repository Structure
+
+- `new_data()`: Function to generate training data.
+- `ValueFunctionNN`: The neural network class for the value function approximation.
+- `MarkovControlNN`: The neural network class for the control policy approximation.
+- Training loops for both neural networks, including loss calculation and optimization steps.
+- Visualization scripts for comparing the neural network approximations with the analytical solutions.
+
+## Results
+
+The training process demonstrates the neural networks' ability to learn the underlying patterns in the LQR solutions. The final visualizations provide a clear comparison between the approximations made by the neural networks and the actual solutions, showcasing the effectiveness of deep learning in solving such problems.
+
 ### Exercise 2.2
 Something
 ## Deep Galerkin approximation for a linear PDE
