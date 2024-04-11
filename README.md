@@ -171,7 +171,7 @@ For Exercise 3.1 there are 3 __*.ipynb file__ and a __*.py file__.
 
 #### Overview
 
-This section of the project applies deep learning techniques to solve Linear Quadratic Regulator (LQR) problems. Using Deep Generative Models (DGM), we aim to approximate the value function and control actions for a given LQR setup. The project showcases the power of neural networks in handling complex dynamic systems and control tasks.
+This section of the project applies Deep Galerkin approximation to solve Linear Quadratic Regulator (LQR) problems. 
 
 The main components of this project include model definition, training, and evaluation against Monte Carlo simulations for verification. Here is a brief guide on how to use the scripts included in this project:
 
@@ -202,7 +202,7 @@ For Exercise 4.1 there are one __*.ipynb file__ .
 
 This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function $v$ and the Markov controls $a$ using neural networks, represented as $`v(·, ·; θ_{val})`$ and $`a(·, ·; θ_{act})`$.
 
-The process is iterative, starting with a given Markov control function approximated by initially `torch.tensor([[1., 1.]])` then $`a(·, ·; θ_{act})`$, leading to an update $θ_val$. Then with $θ_{val}$ fixed, we update $θ_{act}$ to minimize the Hamiltonian.
+The process is iterative, starting with a given Markov control function approximated by initially $`torch.tensor([[1., 1.]])`$ then $`a(·, ·; θ_{act})`$, leading to an update $θ_val$. Then with $θ_{val}$ fixed, we update $θ_{act}$ to minimize the Hamiltonian.
 
 #### Policy iteration
 
