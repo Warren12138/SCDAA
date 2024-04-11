@@ -167,6 +167,7 @@ The training process demonstrates the neural networks' ability to learn the unde
 
 ## Deep Galerkin approximation for a linear PDE
 ### Exercise 3.1
+For Exercise 3.1 there are 3 __*.ipynb file__ and a __*.py file__. 
 
 #### Overview
 
@@ -195,12 +196,13 @@ The main components of this project include model definition, training, and eval
 
 ## Policy iteration with DGM
 ### Exercise 4.1
+For Exercise 4.1 there are one __*.ipynb file__ . 
 
 #### Overview
 
-This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function v and the Markov controls a using neural networks, represented as `v(·, ·; θ_val)` and `a(·, ·; θ_act)`.
+This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function $v$ and the Markov controls $a$ using neural networks, represented as `v(·, ·; θ_val)` and `a(·, ·; θ_act)`.
 
-The process is iterative, starting with a given Markov control function approximated by initially `torch.tensor([[1., 1.]])` then `a(·, ·; θ_act)`, leading to an update θ_val. Then with θ_val fixed, we update θ_act to minimize the Hamiltonian.
+The process is iterative, starting with a given Markov control function approximated by initially `torch.tensor([[1., 1.]])` then `a(·, ·; θ_act)`, leading to an update $θ_val$. Then with $θ_val$ fixed, we update $θ_act$ to minimize the Hamiltonian.
 
 #### Policy iteration
 
