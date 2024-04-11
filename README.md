@@ -139,11 +139,11 @@ This README guides through Monte Carlo simulations for Exercise 1.2, highlightin
 ### Exercise 2.1 and Exercise 2.2
 In this section of our project, we explore the approximation of Linear Quadratic Regulator (LQR) solutions using neural networks. We focus on two main aspects: approximating the value function and the optimal control policy through deep learning models. Below, we outline the methodology, code structure, and results obtained from our experiments.
 
-## Overview
+#### Overview
 
 The goal of Exercise 2 is to demonstrate the capability of neural networks in approximating complex functions within the context of control theory. Specifically, we address the LQR problem, a fundamental problem in control theory for designing optimal controllers.
 
-## Methodology
+#### Methodology
 
 1. **Data Generation**: We generate synthetic data that represents different states and time samples for the LQR problem. This data serves as the input for training our neural networks.
    
@@ -155,7 +155,7 @@ The goal of Exercise 2 is to demonstrate the capability of neural networks in ap
 
 4. **Visualization**: After training, we visually compare the neural network approximations with the theoretical solutions to evaluate the models' performance.
 
-## Repository Structure
+#### Repository Structure
 
 - `new_data()`: Function to generate training data.
 - `ValueFunctionNN`: The neural network class for the value function approximation.
@@ -163,7 +163,7 @@ The goal of Exercise 2 is to demonstrate the capability of neural networks in ap
 - Training loops for both neural networks, including loss calculation and optimization steps.
 - Visualization scripts for comparing the neural network approximations with the analytical solutions.
 
-## Results
+#### Results
 
 The training process demonstrates the neural networks' ability to learn the underlying patterns in the LQR solutions. The final visualizations provide a clear comparison between the approximations made by the neural networks and the actual solutions, showcasing the effectiveness of deep learning in solving such problems.
 
@@ -177,7 +177,7 @@ This section of the project applies deep learning techniques to solve Linear Qua
 
 The main components of this project include model definition, training, and evaluation against Monte Carlo simulations for verification. Here is a brief guide on how to use the scripts included in this project:
 
-### Model Training
+#### Model Training
 
 1. **Define the Neural Network Models**: The models for approximating the value function and control actions are defined in `DGMNN.py` and `MarkovControlNN.py`, respectively.
 
@@ -185,13 +185,13 @@ The main components of this project include model definition, training, and eval
 
 3. **Train the Models**: Run the training script with appropriate hyperparameters and data. Training progress will be saved, and the model's state dict can be exported for later use.
 
-### Evaluation
+#### Evaluation
 
 - **Load Trained Models**: Load the models' state dicts and prepare them for evaluation.
 
 - **Compare with Monte Carlo Simulations**: Evaluate the models' outputs against the results from Monte Carlo simulations for verification.
 
-### Visualization
+#### Visualization
 
 - Plot the training loss over epochs to assess the learning progress.
 - Compare the predicted value functions and control actions with those from Monte Carlo simulations visually.
