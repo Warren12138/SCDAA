@@ -91,7 +91,7 @@ For Exercise 1.1 there are a __*.ipynb file__ and a __*.py file__.
 ### Exercise 1.2
 #### Exercise 1.2 Simulation Analysis 
 
-For Exercise 1.2 there is a __*.ipynb file_. 
+For Exercise 1.2 there is a __*.ipynb file__. 
 
 #### Overview
 
