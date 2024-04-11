@@ -126,9 +126,6 @@ Post-simulation, data is analyzed to observe convergence behaviors:
 
 Plots are saved in EPS and PNG formats for quality and accessibility.
 
-#### Requirements
-
-Ensure Python 3 and dependencies (`torch`, `matplotlib`, `numpy`) are installed.
 
 #### Conclusion
 
