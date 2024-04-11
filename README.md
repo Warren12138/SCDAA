@@ -200,9 +200,9 @@ For Exercise 4.1 there are one __*.ipynb file__ .
 
 #### Overview
 
-This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function $v$ and the Markov controls $a$ using neural networks, represented as $`v(·, ·; θ_val)`$ and $`a(·, ·; θ_act)`$.
+This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function $v$ and the Markov controls $a$ using neural networks, represented as $`v(·, ·; θ_{val})`$ and $`a(·, ·; θ_{act})`$.
 
-The process is iterative, starting with a given Markov control function approximated by initially `torch.tensor([[1., 1.]])` then $`a(·, ·; θ_act)`$, leading to an update $θ_val$. Then with $θ_{val}$ fixed, we update $θ_{act}$ to minimize the Hamiltonian.
+The process is iterative, starting with a given Markov control function approximated by initially `torch.tensor([[1., 1.]])` then $`a(·, ·; θ_{act})`$, leading to an update $θ_val$. Then with $θ_{val}$ fixed, we update $θ_{act}$ to minimize the Hamiltonian.
 
 #### Policy iteration
 
