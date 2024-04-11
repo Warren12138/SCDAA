@@ -198,5 +198,28 @@ The main components of this project include model definition, training, and eval
 
 ## Policy iteration with DGM
 ### Exercise 4.1
-Something
+
+#### Overview
+
+This section of the project combines the Policy Iteration Algorithm with Deep Galerkin Methods introduced in section 3. The task involves approximating the value function v and the Markov controls a using neural networks, represented as v(·, ·; θ_val) and a(·, ·; θ_act).
+
+The process is iterative, starting with a given Markov control function approximated by initially torch.tensor([[1., 1.]]) thena(·, ·; θ_act), leading to an update θ_val. Then with θ_val fixed, we update θ_act to minimize the Hamiltonian.
+
+### Update of value function and markov control 
+
+1. **Introduce Neural Network Methods from 3.1** The models for approximating the value function and control actions are defined in `DGMNN_YYBver`.
+
+2. **Updating value function and control** We run the iteration by updating the value function and markov control while the difference is larger than 0.01 and iteration times less than 5.
+
+### Evaluation
+
+- **Compare with Numerical Solution**
+
+- Compare the according updated value functions and control actions with those from Numerical solution output visually.
+- Print the update control actions and the according output from the Numerical solution.
+
+
+
+
+
 
