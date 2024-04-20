@@ -102,6 +102,10 @@ if __name__ == '__main__':
     J_tensor_file = torch.tensor([])
     torch.save(J_tensor_file, sys.argv[1]+'/value_MC.pt')
 
+    s_time = time.time()
+
+    print('Monte Carlo Start ...')
+
     for outer in range(len(t_batch_i)):
 
         t0 = t_batch_i[outer]
@@ -161,3 +165,4 @@ if __name__ == '__main__':
     pool.join()
 
     print(f"\nMonte Carlo Simulation (S_size {batch_size_MC} T_step_num {N}) Finished.")
+    print(f'耗时 {time.time()-s_time} 秒。')
